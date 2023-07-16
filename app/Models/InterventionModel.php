@@ -12,6 +12,7 @@ class InterventionModel extends Model
         'code_itv',
         'code_terroir',
         'num_itv',
+        'etat_itv',
         'date_os',
         'date_prevu_pec',
         'date_pec',

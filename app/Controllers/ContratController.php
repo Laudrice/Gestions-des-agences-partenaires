@@ -19,6 +19,34 @@ class ContratController extends BaseController
         return view('contrats/index.php', $data);
     }
 
+    public function viewContrat($num_contrat)
+    {
+        $db = \Config\Database::connect();
+
+        // Récupérer les informations du contrat
+        $contrat = $db->table('contrat')->getWhere(['num_contrat' => $num_contrat])->getRow();
+
+        if (!$contrat) {
+            // Si le contrat n'est pas trouvé, vous pouvez gérer l'affichage d'une erreur ou rediriger vers une autre page, selon vos besoins.
+            return redirect()->to(base_url('erreur'));
+        }
+
+        // Récupérer tous les terroirs associés au contrat
+        $terroirs = $db->table('terroir')->getWhere(['num_contrat' => $num_contrat])->getResult();
+
+        // Récupérer toutes les interventions associées à chaque terroir
+        foreach ($terroirs as &$terroir) {
+            $interventions = $db->table('intervention')->getWhere(['code_terroir' => $terroir->code_terroir])->getResult();
+            $terroir->interventions = $interventions;
+        }
+
+        $data['contrat'] = $contrat;
+        $data['terroirs'] = $terroirs;
+        return view('contrats/viewContrat.php', $data);
+    }
+
+
+
     public function create()
     {
         return view('contrats/create');
@@ -63,6 +91,7 @@ class ContratController extends BaseController
         // Parcourir les tableaux pour obtenir les valeurs individuelles
         $somme_salaires = 0;
         for ($i = 0; $i < count($code_terroir); $i++) {
+
             $con = mysqli_connect('localhost', 'root', '', 'gestion_fid');
 
             $query = "SELECT MAX(CAST(SUBSTRING(code_terroir, 4) AS UNSIGNED)) AS max_code_terriur FROM terroir";
@@ -99,13 +128,33 @@ class ContratController extends BaseController
 
             // Boucle pour insérer les données d'intervention et de prévision
             for ($j = 1; $j <= $nb_intervention; $j++) {
+
+
+                $con = mysqli_connect('localhost', 'root', '', 'gestion_fid');
+
+                $query = "SELECT MAX(CAST(SUBSTRING(code_itv, 4) AS UNSIGNED)) AS max_code_itv FROM intervention";
+                $result = mysqli_query($con, $query);
+                $row = mysqli_fetch_assoc($result);
+                $maxCodeItv = $row['max_code_itv'];
+
+                if (empty($maxCodeItv)) {
+                    $codeItv = "ITV001";
+                } else {
+                    $nxt = intval($maxCodeItv) + 1;
+                    $codeItv = "ITV" . sprintf("%03d", $nxt);
+                }
+
+                mysqli_close($con);
+
+
                 // Générer la valeur de code_itv
-                $code_itv = 'Intervention_' . $j;
+                $num_itv = 'Intervention_' . $j;
 
                 // Insérer les données d'intervention dans la table correspondante en utilisant le modèle InterventionModel
                 $interventionData = [
                     'code_terroir' => $codeTerroir,
-                    'code_itv' => $code_itv
+                    'code_itv' => $codeItv,
+                    'num_itv' => $num_itv
                 ];
                 $interventions->insert($interventionData);
             }
@@ -114,14 +163,27 @@ class ContratController extends BaseController
         // Récupérer le contrat existant
         $id_contrat = $this->request->getPost('id_contrat');
         $contrat = $contrats->find($id_contrat);
-
-        // // Ajouter la somme des salaires au tableau de données
-        // $data['somme_salaires_terroirs'] = $somme_salaires;
-
-        // // Mettre à jour le contrat existant
-        // $contrat->update($data);
-
-        // Rediriger l'utilisateur vers une page de confirmation ou afficher un message de succès
         return redirect('contrats')->with('Status', 'Mise à jour réussie');
+    }
+
+    public function agcView()
+    {
+        $contrat = new ContratModel();
+
+        $data['contrats'] = $contrat->findAll();
+
+        return view('contrats/agc.php', $data);
+    }
+
+
+    public function editAgc($num_contrat)
+    {
+        $contrat = new ContratModel();
+
+        $db = \Config\Database::connect();
+
+        $contrats = $db->table('contrat')->getWhere(['num_contrat' => $num_contrat])->getResult();
+        $data['contrats'] = $contrats;
+        return view('contrats/editAgc.php', $data);
     }
 }

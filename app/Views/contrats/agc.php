@@ -23,11 +23,10 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>N°</th>
-                                <th>Date</th>
                                 <th>AGEC</th>
-                                <th>Nb terroir</th>
-                                <th>Intervention/terroir</th>
+                                <th>Adresse</th>
+                                <th>Tel</th>
+                                <th>Email</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -35,17 +34,22 @@
                             <?php if ($contrats) : ?>
                                 <?php foreach ($contrats as $row) :
                                     $num_contrat = $row['num_contrat'];
+                                    $nom_agc = $row['nom_agc'];
+                                    $adresse_agc = $row['adresse_agc'];
+                                    $tel_agc = $row['tel_agc'];
+                                    $mail_agc = $row['mail_agc'];
                                 ?>
                                     <tr>
-                                        <td><?= $row['num_contrat'] ?></td>
-                                        <td><?= $row['date_contrat'] ?></td>
-                                        <td><?= $row['nom_agc'] ?></td>
-                                        <td><?= $row['nombre_terroir'] ?></td>
-                                        <td><?= $row['nombre_intervention_par_terroir'] ?></td>
+                                        <td><?= $nom_agc ?></td>
+                                        <td><?= $adresse_agc ?></td>
+                                        <td><?= $tel_agc ?></td>
+                                        <td><?= $mail_agc ?></td>
                                         <td>
-                                            <a href="<?= base_url('contrats/viewContrat/' . $num_contrat) ?>" class="btn btn-primary sm">Voir</a>
+                                            <a href="<?= base_url('contrats/editAgc/' . $num_contrat) ?>" class="btn btn-primary sm">Modifier</a>
                                             <a href="" class="btn btn-danger sm">Supprimer</a>
                                         </td>
+
+
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
