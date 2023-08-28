@@ -29,7 +29,7 @@ class ContratController extends BaseController
         $contrat = $db->table('contrat')->getWhere(['num_contrat' => $num_contrat])->getRow();
 
         if (!$contrat) {
-            // Si le contrat n'est pas trouvé, vous pouvez gérer l'affichage d'une erreur ou rediriger vers une autre page, selon vos besoins.
+            //404 not found
             return redirect()->to(base_url('erreur'));
         }
 
@@ -88,7 +88,7 @@ class ContratController extends BaseController
         $nom_terroir = $this->request->getPost('nom_terroir');
         $salaire_prevu_terroir_values = $this->request->getPost('salaire_prevu_terroir');
 
-        // Parcourir les tableaux pour obtenir les valeurs individuelles
+        // Parcourir du
         $somme_salaires = 0;
         for ($i = 0; $i < count($code_terroir); $i++) {
 
@@ -113,7 +113,7 @@ class ContratController extends BaseController
             $salaire_prevu_terroir = $salaire_prevu_terroir_values[$i];
             $somme_salaires += $salaire_prevu_terroir;
 
-            // Par exemple, les insérer dans la base de données
+            // insertion
             $terroir_data = [
                 'code_terroir' => $codeTerroir,
                 'num_contrat' => $num_contrat,
@@ -121,12 +121,10 @@ class ContratController extends BaseController
                 'salaire_prevu_terroir' => $salaire_prevu_terroir,
             ];
 
-            // Insérer les données du terroir dans la base de données
             $terroirs->insert($terroir_data);
 
             $interventions = new InterventionModel();
 
-            // Boucle pour insérer les données d'intervention et de prévision
             for ($j = 1; $j <= $nb_intervention; $j++) {
 
 
@@ -150,7 +148,7 @@ class ContratController extends BaseController
                 // Générer la valeur de code_itv
                 $num_itv = 'Intervention_' . $j;
 
-                // Insérer les données d'intervention dans la table correspondante en utilisant le modèle InterventionModel
+                //insertion
                 $interventionData = [
                     'code_terroir' => $codeTerroir,
                     'code_itv' => $codeItv,
