@@ -137,7 +137,7 @@ if (empty($maxCodeTerroir)) {
 
         $('#terroirsContainer').append(terroirHTML);
 
-        // Increment the codeTerroirNumber for the next iteration
+        // Incrementation
         <?= $codeTerroirNumber++; ?>
       }
     }
