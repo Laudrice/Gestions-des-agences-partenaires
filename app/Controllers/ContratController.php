@@ -10,6 +10,8 @@ use App\Controllers\BaseController;
 
 class ContratController extends BaseController
 {
+
+    /////////////////////////CONTRATS
     public function index()
     {
         $contrat = new ContratModel();
@@ -44,8 +46,6 @@ class ContratController extends BaseController
         $data['terroirs'] = $terroirs;
         return view('contrats/viewContrat.php', $data);
     }
-
-
 
     public function create()
     {
@@ -166,6 +166,8 @@ class ContratController extends BaseController
         return redirect('contrats')->with('Status', 'Mise à jour réussie');
     }
 
+
+    ///////////////////////AGEC
     public function agcView()
     {
         $contrat = new ContratModel();
@@ -186,4 +188,45 @@ class ContratController extends BaseController
         $data['contrats'] = $contrats;
         return view('contrats/editAgc.php', $data);
     }
+
+
+
+
+    ///////////////////////////Terroir
+    public function listIntervention($code_terroir)
+    {
+        $terroirModel = new TerroirModel();
+        $interventionModel = new InterventionModel();
+
+        $db = \Config\Database::connect();
+
+        $terroirs = $db->table('terroir')->getWhere(['code_terroir' => $code_terroir])->getResult();
+        $interventions = $db->table('intervention')->getWhere(['code_terroir' => $code_terroir])->getResult();
+
+        $data = [
+            'terroirs' => $terroirs,
+            'interventions' => $interventions
+        ];
+
+        return view('contrats/terroirs/listIntervention.php', $data);
+    }
+
+    public function terroirOperation($code_terroir)
+    {
+        $terroirModel = new TerroirModel();
+        $interventionModel = new InterventionModel();
+
+        $db = \Config\Database::connect();
+
+        $terroirs = $db->table('terroir')->getWhere(['code_terroir' => $code_terroir])->getResult();
+        $interventions = $db->table('intervention')->getWhere(['code_terroir' => $code_terroir])->getResult();
+
+        $data = [
+            'terroirs' => $terroirs,
+            'interventions' => $interventions
+        ];
+
+        return view('contrats/terroirs/terroirOperation.php', $data);
+    }
+
 }

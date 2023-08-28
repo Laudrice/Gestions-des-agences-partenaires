@@ -13,7 +13,7 @@
                 </button>
             </div>
             <ul id="menu" class="hidden md:flex space-x-4">
-                <li><a class="nav-link hover:bg-green-400 px-3 py-2 rounded text-white accueil" href="<?= base_url('contrats') ?>">Accueil</a></li>
+                <li><a class="nav-link hover:bg-green-400 px-3 py-2 rounded text-white accueil" href="<?= base_url('contrats') ?>">Contrats</a></li>
                 <li><a class="nav-link hover:bg-green-400 px-3 py-2 rounded text-white employe" href="<?= base_url('contrats/agc') ?>">Agences</a></li>
                 <li><a class="nav-link hover:bg-green-400 px-3 py-2 rounded text-white solde" href="#">Rapports</a></li>
                 <li><a class="nav-link hover:bg-green-400 px-3 py-2 rounded text-white historique" href="#">Notifications</a></li>

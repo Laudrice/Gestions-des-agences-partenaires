@@ -29,13 +29,21 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
+//Contrats
 $routes->get('/', 'Home::index');
 $routes->get('/contrats', 'ContratController::index');
-$routes->get('/contrats/agc', 'ContratController::agcView');
 $routes->get('/contrats/create', 'ContratController::create');
 $routes->post('/contrats/add', 'ContratController::store');
-$routes->get('/contrats/editAgc/(:any)', 'ContratController::editAgc/$1');
 $routes->get('/contrats/viewContrat/(:any)', 'ContratController::viewContrat/$1');
+
+//AGEC
+$routes->get('/contrats/agc', 'ContratController::agcView');
+$routes->get('/contrats/editAgc/(:any)', 'ContratController::editAgc/$1');
+
+//Terroir
+$routes->get('/contrats/listIntervention/(:any)', 'ContratController::listIntervention/$1');
+$routes->get('/contrats/terroirOperation/(:any)', 'ContratController::terroirOperation/$1');
 
 /*
  * --------------------------------------------------------------------
